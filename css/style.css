@@ -1,0 +1,177 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;1,900&display=swap');
+*{
+    font-family: 'Poppins',cursive;
+}
+body{
+    color: azure;
+    width: 100%;
+    height: 100vh; /* ocupar toda la altura de la ventana */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* opcional, puede cambiar a space-between */
+    align-items: center;
+    background-color: black;
+    margin: 0;
+    padding: 0;
+}
+
+.botones{
+    padding: 9px;
+    border-radius: 80px;
+    background-color: transparent;
+    border: none;
+}
+
+.botones a {
+    display: inline-block;
+    padding: 12px 30px;
+    border-radius: 80px;
+    background: rgba(255, 255, 255, 0.15); /* vidrio transparente */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px); /* efecto glass */
+    color: #fff;
+    font-weight: bold;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    cursor: pointer;
+}
+
+.botones a:hover {
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    transform: translateY(-2px);
+}
+
+.botones a:focus{
+    background-color: rgb(50, 194, 194);
+}
+
+.greetings{
+    font-size: 7rem;
+    font-weight: 900;
+}
+.greetings > span{
+    animation: glow 2.5s ease-in-out infinite;
+}
+@keyframes glow{
+    0%, 100%{
+        color: #fff;
+        text-shadow: 0 0 12px #39c6d6, 0 0 50px #39c6d6, 0 0 100px #39c6d6;
+    }
+    10%, 90%{
+        color: #111;
+        text-shadow: none;
+    }
+}
+.greetings > span:nth-child(2){
+    animation-delay: .2s ;
+}
+.greetings > span:nth-child(3){
+    animation-delay: .4s ;
+}
+.greetings > span:nth-child(4){
+    animation-delay: .6s;
+}
+.greetings > span:nth-child(5){
+    animation-delay: .8s;
+}
+.greetings > span:nth-child(6){
+    animation-delay: 1s;
+}
+
+.description {
+    display: flex;
+    flex-direction: column; /* apilar los spans verticalmente */
+    justify-content: center; /* centrar verticalmente */
+    align-items: center; /* centrar horizontalmente */
+    text-align: center; /* opcional, por si el contenido se rompe en varias líneas */
+    height: 200px; /* ajusta según el diseño o contenedor */
+    gap: 0.5em; /* espacio entre los spans */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+.button a{
+    text-decoration: none;
+    font-size: 1rem;
+    color: #111;
+}
+
+@media screen and (max-width:574px){
+    .greetings{
+        display: block;
+        font-size: 4rem;
+        font-weight: 800;
+        text-align: center;
+    }
+    .description{
+        font-size: 2rem;
+    }
+    
+    .button a{
+        font-size: 1rem;
+    }
+}
+
+#nombre-usuario {
+    display: block;
+    margin-top: 0.5em;
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #ff69b4; /* rosa fuerte */
+    text-shadow: 0 0 5px #ff69b4, 0 0 10px #ff69b4, 0 0 20px #ff69b4, 0 0 30px #ff69b4;
+    text-align: center;
+
+    /* Animaciones */
+    animation: glowPop 2s ease-in-out infinite, colorShift 3s ease-in-out infinite alternate;
+}
+
+/* Animación de glow + pop */
+@keyframes glowPop {
+    0%, 100% {
+        transform: scale(1);
+        text-shadow: 0 0 5px #ff69b4, 0 0 10px #ff69b4, 0 0 20px #ff69b4, 0 0 30px #ff69b4;
+    }
+    50% {
+        transform: scale(1.1);
+        text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff69b4, 0 0 30px #ff69b4, 0 0 40px #ff69b4;
+    }
+}
+
+/* Animación de cambio de color suave */
+@keyframes colorShift {
+    0% { color: #ff69b4; }
+    50% { color: #ff1493; }
+    100% { color: #ff69b4; }
+}
+
+.center-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* repartir los elementos verticalmente */
+    align-items: center;
+    height: 100vh; /* ocupar todo el alto de la ventana */
+    width: 100%;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+.titulo {
+    max-width: 90%; /* evitar que el texto se salga */
+    text-align: center;
+}
+.flowers {
+    max-height: 30vh; /* darle más espacio vertical para la animación */
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* que crezcan desde abajo */
+    margin-top: 0;
+    overflow: hidden; /* cortar lo que se pase del contenedor */
+    position: relative;
+}
+#flores-audio{
+    z-index: 1000;
+}
