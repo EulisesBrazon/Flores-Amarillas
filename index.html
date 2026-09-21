@@ -35,14 +35,21 @@
         // Obtener los parámetros de la URL
         const params = new URLSearchParams(window.location.search);
         const nombre = params.get("nombre");
+        const variant = params.get("variant");
 
         // Mostrar nombre en el span si existe
         if (nombre) {
             document.getElementById("nombre-usuario").textContent = decodeURIComponent(nombre);
+        }
 
-            // Agregar el nombre al href del botón para la siguiente página
-            const link = document.getElementById("link-flower");
-            link.href = `flower.html?nombre=${encodeURIComponent(nombre)}`;
+        // Construir URL de destino con los parámetros presentes
+        const targetParams = new URLSearchParams();
+        if (nombre) targetParams.set("nombre", nombre);
+        if (variant) targetParams.set("variant", variant);
+
+        const link = document.getElementById("link-flower");
+        if (link && targetParams.toString()) {
+            link.href = `flower.html?${targetParams.toString()}`;
         }
     </script>
 </body>

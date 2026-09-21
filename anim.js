@@ -35,6 +35,7 @@ var lyricsData = [
 
 // Animar las letras
 function updateLyrics() {
+  if (!audio || !lyrics) return;
   var time = Math.floor(audio.currentTime);
   var currentLine = lyricsData.find(
     (line) => time >= line.time && time < line.time + 6
@@ -61,6 +62,7 @@ setInterval(updateLyrics, 1000);
 // Función para ocultar el título después de 216 segundos
 function ocultarTitulo() {
   var titulo = document.querySelector(".titulo");
+  if (!titulo) return;
   titulo.style.animation =
     "fadeOut 3s ease-in-out forwards"; /* Duración y función de temporización de la desaparición */
   setTimeout(function () {

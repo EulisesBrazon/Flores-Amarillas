@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/main.css" />
-    <link rel="icon" href="img/flowers.png" type="image/x-icon" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/variants.css">
+    <link rel="stylesheet" href="css/bouquet-variant.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="img/flowers.png" type="image/x-icon">
     <title>Flower</title>
   </head>
-  <body >
+  <body>
 
-    
+
     <div class="flowers">
       <div class="flower flower--1">
         <div class="flower__leafs flower__leafs--1">
@@ -86,8 +91,6 @@
           <div class="flower__line__leaf flower__line__leaf--2"></div>
           <div class="flower__line__leaf flower__line__leaf--3"></div>
           <div class="flower__line__leaf flower__line__leaf--4"></div>
-          <span id="nombre-usuario"></span>
-          <audio id="flores-audio" src="sound/FloresAmarillasMusic.mp3" controls></audio>
         </div>
       </div>
 
@@ -146,7 +149,7 @@
         <div class="flower__g-front">
           <div
             class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--1"
-            
+
           >
             <div class="flower__g-front__leaf"></div>
           </div>
@@ -326,22 +329,140 @@
 
     <!-- <audio id="flores-audio" src="sound/FloresAmarillasMusic.mp3" controls></audio> -->
     <!-- <span id="nombre-usuario"></span> -->
-    
+
+    <!-- ========================================== -->
+    <!-- VARIANTE 3: ESCENARIO RAMO 3D & PÉTALOS    -->
+    <!-- ========================================== -->
+    <div id="bouquet-scene" class="bouquet-scene">
+      <canvas id="bouquet-canvas"></canvas>
+
+      <!-- Tarjeta Dedicatoria -->
+      <div class="bouquet-card">
+        <span class="bouquet-card-tag">✨ Feliz Día de las Flores Amarillas ✨</span>
+        <h1 class="bouquet-card-name" id="bouquet-name">Para Ti</h1>
+        <p class="bouquet-card-sub" id="bouquet-phrase">Un detalle eterno para iluminar tus días 💛</p>
+      </div>
+
+      <!-- Ramo de Flores Tridimensional -->
+      <div class="bouquet-display" id="bouquet-display" title="Toca o haz clic para enviar destellos">
+        <!-- Resplandor áureo envolvente detrás del ramo -->
+        <div class="bouquet-back-glow"></div>
+
+        <!-- Hojas ornamentales del fondo -->
+        <div class="b-leaf b-leaf--1"></div>
+        <div class="b-leaf b-leaf--2"></div>
+        <div class="b-leaf b-leaf--3"></div>
+        <div class="b-leaf b-leaf--4"></div>
+
+        <!-- Envoltura de Regalo de Papel Kraft (Detrás de las flores) -->
+        <div class="bouquet-wrap-container">
+          <div class="bouquet-wrap-back"></div>
+          <div class="bouquet-wrap-front"></div>
+          <div class="bouquet-bow">
+            <div class="bow-loop-left"></div>
+            <div class="bow-knot"></div>
+            <div class="bow-loop-right"></div>
+            <div class="bow-tail-left"></div>
+            <div class="bow-tail-right"></div>
+          </div>
+        </div>
+
+        <!-- Flor Superior de Fondo -->
+        <div class="b-flower b-flower--top">
+          <div class="b-petals-layer b-petals-layer--outer"></div>
+          <div class="b-petals-layer b-petals-layer--inner"></div>
+          <div class="b-flower-center"></div>
+        </div>
+
+        <!-- Flor Lateral Izquierda (Al frente) -->
+        <div class="b-flower b-flower--left">
+          <div class="b-petals-layer b-petals-layer--outer"></div>
+          <div class="b-petals-layer b-petals-layer--inner"></div>
+          <div class="b-flower-center"></div>
+        </div>
+
+        <!-- Flor Lateral Derecha (Al frente) -->
+        <div class="b-flower b-flower--right">
+          <div class="b-petals-layer b-petals-layer--outer"></div>
+          <div class="b-petals-layer b-petals-layer--inner"></div>
+          <div class="b-flower-center"></div>
+        </div>
+
+        <!-- Flor Central Principal (Al frente de todo) -->
+        <div class="b-flower b-flower--main">
+          <div class="b-petals-layer b-petals-layer--outer"></div>
+          <div class="b-petals-layer b-petals-layer--inner"></div>
+          <div class="b-flower-center"></div>
+        </div>
+      </div>
+
+      <span class="bouquet-interaction-hint">✨ Toca la pantalla o el ramo para generar destellos dorados ✨</span>
+    </div>
+
+    <!-- Audio Principal para todas las variantes -->
+    <audio id="flores-audio" src="sound/FloresAmarillasMusic.mp3" preload="auto" loop></audio>
+
+    <!-- Botón Flotante de Música Accesible en Mobile -->
+    <button type="button" id="music-toggle-btn" class="music-toggle-btn" aria-label="Reproducir o pausar música">
+      <span class="music-icon" id="music-icon">🎵</span>
+      <span class="music-label" id="music-label">Música</span>
+    </button>
+
+    <!-- Dedicatoria Flotante para Variantes 1 y 2 (Clásica y Sakura) -->
+    <div class="dedicatoria-contenedor">
+      <span id="nombre-usuario"></span>
+      <p id="frase-usuario" class="frase-dedicatoria"></p>
+    </div>
+
     <div class="night"></div>
     <script>
-      // Botón para pausar/reanudar la música
+      // Control de música robusto y adaptado para móviles
       const audio = document.getElementById('flores-audio');
-      const btn = document.getElementById('audio-toggle');
-      audio.muted = false;
-      btn.addEventListener('click', function() {
-        if (audio.paused) {
-          audio.play();
-          btn.textContent = 'Pausar música';
+      const musicBtn = document.getElementById('music-toggle-btn');
+      const musicIcon = document.getElementById('music-icon');
+      const musicLabel = document.getElementById('music-label');
+
+      function updateMusicUI(isPlaying) {
+        if (!musicBtn) return;
+        if (isPlaying) {
+          musicBtn.classList.add('is-playing');
+          if (musicIcon) musicIcon.textContent = '🎵';
+          if (musicLabel) musicLabel.textContent = 'Sonando';
         } else {
-          audio.pause();
-          btn.textContent = 'Reanudar música';
+          musicBtn.classList.remove('is-playing');
+          if (musicIcon) musicIcon.textContent = '🔇';
+          if (musicLabel) musicLabel.textContent = 'Pausa';
         }
-      });
+      }
+
+      if (audio && musicBtn) {
+        musicBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          if (audio.paused) {
+            audio.play().then(() => updateMusicUI(true)).catch(() => {});
+          } else {
+            audio.pause();
+            updateMusicUI(false);
+          }
+        });
+
+        // Intentar reproducción automática
+        audio.play().then(() => {
+          updateMusicUI(true);
+        }).catch(() => {
+          // Si el navegador móvil bloquea autoplay con sonido, se activa al primer toque en la pantalla
+          updateMusicUI(false);
+          const startAudioOnTouch = () => {
+            if (audio.paused) {
+              audio.play().then(() => updateMusicUI(true)).catch(() => {});
+            }
+            window.removeEventListener('pointerdown', startAudioOnTouch);
+            window.removeEventListener('touchstart', startAudioOnTouch);
+          };
+          window.addEventListener('pointerdown', startAudioOnTouch, { passive: true });
+          window.addEventListener('touchstart', startAudioOnTouch, { passive: true });
+        });
+      }
     </script>
     <script>
         // Obtener los parámetros de la URL
@@ -350,14 +471,27 @@
 
         // Mostrar nombre en el span si existe
         if (nombre) {
-            document.getElementById("nombre-usuario").textContent = decodeURIComponent(nombre);
+            const decoded = decodeURIComponent(nombre);
+            const nombreSpan = document.getElementById("nombre-usuario");
+            if (nombreSpan) {
+              nombreSpan.textContent = decoded;
+            }
 
-            // Agregar el nombre al href del botón para la siguiente página
+            const bouquetName = document.getElementById("bouquet-name");
+            if (bouquetName) {
+              bouquetName.textContent = decoded;
+            }
+
             const link = document.getElementById("link-flower");
-            link.href = `flower.html?nombre=${encodeURIComponent(nombre)}`;
+            if (link) {
+              link.href = `flower.html?nombre=${encodeURIComponent(nombre)}`;
+            }
         }
     </script>
     <script src="anim.js"></script>
     <script src="main.js"></script>
+    <script src="bouquet-variant.js"></script>
+    <script src="frases.js"></script>
+    <script src="prototype.js"></script>
   </body>
 </html>

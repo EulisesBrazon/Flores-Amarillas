@@ -1,0 +1,368 @@
+/* =========================================================
+   VARIANTES PARA EL PROTOTIPO - DÍA DE LAS FLORES AMARILLAS
+   ========================================================= */
+
+/* --- Transición suave para cambios de variante --- */
+.night,
+.flower__leaf,
+.flower__leafs::after,
+.flower__light,
+#nombre-usuario,
+.titulo {
+  transition: background-color 0.6s ease, color 0.6s ease, text-shadow 0.6s ease, filter 0.6s ease;
+}
+
+/* =========================================================
+   VARIANTE 1: CLÁSICA (Flores Amarillas Floricienta)
+   Gated by: body.variant-classic (Aplica los colores base de main.css)
+   ========================================================= */
+
+/* =========================================================
+   VARIANTE 2: SAKURA TWILIGHT / ROMANCE CREPUSCULAR
+   Gated by: body.variant-sakura
+   ========================================================= */
+body.variant-sakura {
+  background-color: #0b0314;
+}
+
+/* Fondo de noche crepuscular romántico */
+body.variant-sakura .night {
+  background-image:
+    radial-gradient(
+      ellipse at top,
+      transparent 0%,
+      #160829
+    ),
+    radial-gradient(
+      ellipse at bottom,
+      #0d0417,
+      rgba(255, 105, 180, 0.24)
+    ),
+    repeating-linear-gradient(
+      220deg,
+      rgb(13, 4, 23) 0px,
+      rgb(13, 4, 23) 19px,
+      transparent 19px,
+      transparent 22px
+    ),
+    repeating-linear-gradient(
+      189deg,
+      rgb(13, 4, 23) 0px,
+      rgb(13, 4, 23) 19px,
+      transparent 19px,
+      transparent 22px
+    ),
+    repeating-linear-gradient(
+      148deg,
+      rgb(13, 4, 23) 0px,
+      rgb(13, 4, 23) 19px,
+      transparent 19px,
+      transparent 22px
+    ),
+    linear-gradient(90deg, #ff70a6, #ffccd5) !important;
+}
+
+/* Resplandor y halo luminoso de las flores en rosa romántico */
+body.variant-sakura .flower__leafs::after {
+  background-color: #ff2a85 !important;
+  filter: blur(9vmin) !important;
+}
+
+/* Pétalos principales en tono Rosa Sakura aterciopelado */
+body.variant-sakura .flower__leaf {
+  background-color: #ff6599 !important;
+  box-shadow: inset 0 0 2vmin rgba(255, 240, 245, 0.7) !important;
+}
+
+/* Pétalo de base / cáliz */
+body.variant-sakura .flower__leaf--4 {
+  background-color: #9d174d !important;
+}
+
+/* Núcleo y textura del centro de la flor */
+body.variant-sakura .flower__white-circle::after {
+  background-color: #ff477e !important;
+  background-image:
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05) 0px,
+      rgba(255, 255, 255, 0.05) 1px,
+      transparent 1px,
+      transparent 12px
+    ),
+    repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.05) 0px,
+      rgba(255, 255, 255, 0.05) 1px,
+      transparent 1px,
+      transparent 12px
+    ),
+    linear-gradient(90deg, #ff3377, #ff85a2) !important;
+}
+
+/* Luciérnagas y partículas flotantes (Rosa cálido y Oro) */
+body.variant-sakura .flower__light {
+  background-color: #ffb3d9 !important;
+  box-shadow: 0 0 6px #ff758c;
+}
+
+body.variant-sakura .flower__light:nth-child(odd) {
+  background-color: #ffd166 !important;
+  box-shadow: 0 0 6px #ffd166;
+}
+
+/* Nombre personalizado del ser querido con destello rosa y fucsia */
+body.variant-sakura #nombre-usuario {
+  color: #ff758c !important;
+  text-shadow: 0 0 8px #ff758c, 0 0 16px #ff3385, 0 0 28px #ff0055, 0 0 40px #ff0055 !important;
+}
+
+/* Posicionamiento y diseño elegante de la dedicatoria en Variantes 1 y 2 */
+.dedicatoria-contenedor {
+  position: fixed;
+  top: calc(max(10px, env(safe-area-inset-top)) + 46px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: auto;
+  max-width: min(90vw, 440px);
+  pointer-events: none;
+  background: rgba(12, 8, 3, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: clamp(6px, 1.2vh, 12px) clamp(14px, 3vw, 24px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 214, 10, 0.3);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 214, 10, 0.15);
+}
+
+body.variant-sakura .dedicatoria-contenedor {
+  background: rgba(18, 6, 24, 0.65);
+  border-color: rgba(255, 105, 180, 0.35);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 105, 180, 0.2);
+}
+
+#nombre-usuario {
+  display: block;
+  font-family: 'Dancing Script', cursive, 'Brush Script MT', sans-serif;
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  font-weight: 700;
+  color: #ffdd00;
+  text-shadow: 0 0 10px #ffd60a, 0 0 25px #ffb703, 0 0 45px #fb8500;
+  line-height: 1.15;
+  margin-bottom: 3px;
+  animation: glowPop 2.5s ease-in-out infinite alternate;
+}
+
+.frase-dedicatoria {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(11px, 2.4vw, 13.5px);
+  color: #fff9db;
+  text-shadow: 0 0 10px rgba(255, 214, 10, 0.6);
+  letter-spacing: 0.6px;
+  line-height: 1.35;
+  margin: 0;
+  padding: 0 4px;
+  max-width: 390px;
+}
+
+body.variant-sakura .frase-dedicatoria {
+  color: #ffe5ec;
+  text-shadow: 0 0 10px rgba(255, 105, 180, 0.75);
+}
+
+/* En la variante 3 (bouquet) la frase ya va dentro de la tarjeta superior */
+body.variant-bouquet .dedicatoria-contenedor {
+  display: none !important;
+}
+
+/* Título romántico */
+body.variant-sakura .titulo {
+  color: #ffb3c6 !important;
+  text-shadow: 0 0 10px #ff3385 !important;
+}
+
+/* Letras de la canción sincronizadas adaptables a todos los formatos */
+#lyrics {
+  position: fixed !important;
+  bottom: clamp(74px, 12vh, 105px) !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  margin-bottom: 0 !important;
+  font-size: clamp(14px, 3.2vw, 22px) !important;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif !important;
+  text-align: center !important;
+  width: 90vw !important;
+  max-width: 620px !important;
+  z-index: 85 !important;
+  pointer-events: none !important;
+  text-shadow: 0 0 12px rgba(0, 0, 0, 0.9), 0 0 20px rgba(255, 214, 10, 0.5) !important;
+}
+
+body.variant-sakura #lyrics {
+  color: #fff0f5 !important;
+  text-shadow: 0 0 10px rgba(255, 105, 180, 0.75) !important;
+}
+
+/* Flores en Variantes 1 y 2: escalado suave para no tocar la dedicatoria ni el switcher */
+@media (max-width: 768px) {
+  .flowers {
+    margin-bottom: clamp(60px, 10vh, 85px) !important;
+    transform: scale(clamp(0.65, min(55vh, 85vw) / 460, 0.92)) !important;
+    transform-origin: bottom center !important;
+  }
+}
+
+/* =========================================================
+   PROTOTYPE SWITCHER (UI BAR CONFORME A LA SKILL PROTOTYPE)
+   ========================================================= */
+.prototype-switcher-container {
+  position: fixed;
+  bottom: max(12px, env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  user-select: none;
+  max-width: 95vw;
+}
+
+.prototype-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: rgba(18, 16, 28, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 9999px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  transition: all 0.3s ease;
+}
+
+.prototype-bar:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.prototype-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  outline: none;
+  flex-shrink: 0;
+}
+
+.prototype-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.08);
+}
+
+.prototype-btn:active {
+  transform: scale(0.94);
+}
+
+.prototype-label-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: clamp(150px, 45vw, 210px);
+  text-align: center;
+}
+
+.prototype-badge {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #ffd166;
+  margin-bottom: 1px;
+}
+
+body.variant-sakura .prototype-badge {
+  color: #ff758c;
+}
+
+.prototype-variant-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+.prototype-toggle-hide {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+
+.prototype-toggle-hide:hover {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.prototype-hint {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 0.3px;
+}
+
+@media (max-width: 500px), (max-height: 650px) {
+  .prototype-hint {
+    display: none;
+  }
+}
+
+/* Estado minimizado (para regalar o capturar pantalla limpia) */
+.prototype-switcher-container.is-minimized .prototype-bar {
+  padding: 4px 10px;
+  background: rgba(18, 16, 28, 0.5);
+}
+
+.prototype-switcher-container.is-minimized .prototype-label-wrapper,
+.prototype-switcher-container.is-minimized .prototype-btn,
+.prototype-switcher-container.is-minimized .prototype-hint {
+  display: none;
+}
+
+.prototype-restore-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 2px 6px;
+}
+
+.prototype-switcher-container.is-minimized .prototype-restore-btn {
+  display: block;
+}
