@@ -143,13 +143,35 @@
       }
     });
 
-    // Inicializar estado
+    // Actualizar UI del switcher si existe
+    updateSwitcherUI(getCurrentVariant());
+  }
+
+  // Inicializar variante y decidir si mostrar el selector de desarrollo
+  function init() {
+    // 1. Siempre activar la variante seleccionada en URL
     applyVariant(getCurrentVariant());
+
+    // 2. Solo mostrar el selector de variantes si es entorno de desarrollo o se pide con ?preview
+    const params = new URLSearchParams(window.location.search);
+    const isLocal =
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1" ||
+      window.location.protocol === "file:";
+    const isExplicitPreview =
+      params.has("preview") ||
+      params.has("dev") ||
+      params.has("switcher") ||
+      params.has("debug");
+
+    if (isLocal || isExplicitPreview) {
+      createSwitcher();
+    }
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", createSwitcher);
+    document.addEventListener("DOMContentLoaded", init);
   } else {
-    createSwitcher();
+    init();
   }
 })();
