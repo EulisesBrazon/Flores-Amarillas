@@ -1,17 +1,20 @@
 {
   "version": 2,
-  "rewrites": [
+  "routes": [
     {
-      "source": "/flower.html",
-      "destination": "/api/flower"
+      "src": "^/api/(.*)$",
+      "dest": "/api/$1"
     },
     {
-      "source": "/index.html",
-      "destination": "/api/index"
+      "src": "^/flower(\\.html)?$",
+      "dest": "/api/flower"
     },
     {
-      "source": "/",
-      "destination": "/api/index"
+      "src": "^/(index(\\.html)?)?$",
+      "dest": "/api/index"
+    },
+    {
+      "handle": "filesystem"
     }
   ]
 }

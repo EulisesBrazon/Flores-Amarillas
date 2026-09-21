@@ -48,12 +48,15 @@ module.exports = (req, res) => {
     <meta name="twitter:image" content="${ogImageUrl}">
     `;
 
-    // Reemplazar <title> si existe e insertar meta tags después de <head>
-    html = html.replace(/<title>.*?<\/title>/i, '');
-    html = html.replace(/<head>/i, `<head>${metaTags}`);
+    // Eliminar etiquetas previas para que no haya duplicados
+    html = html.replace(/<title>[\s\S]*?<\/title>/gi, '');
+    html = html.replace(/<meta\s+name=["']description["'][\s\S]*?>/gi, '');
+    html = html.replace(/<meta\s+property=["']og:[\s\S]*?>/gi, '');
+    html = html.replace(/<meta\s+name=["']twitter:[\s\S]*?>/gi, '');
+    html = html.replace(/<head>/i, `<head>\n${metaTags}`);
 
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=86400');
+    res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400');
     return res.status(200).send(html);
   } catch (error) {
     console.error(error);
