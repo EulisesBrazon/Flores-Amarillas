@@ -786,6 +786,12 @@ body.is-mobile-device .bouquet-card {
   -webkit-backdrop-filter: blur(8px);
 }
 
+body.is-mobile-device .bouquet-back-glow {
+  filter: none !important;
+  animation: none !important;
+  opacity: 0.85;
+}
+
 @media (max-width: 768px) {
   .b-flower--top {
     display: none !important;
@@ -804,6 +810,13 @@ body.is-mobile-device .bouquet-card {
   .bouquet-card {
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+  }
+
+  /* Desactivar filtro blur 24px continuo en el resplandor de fondo */
+  .bouquet-back-glow {
+    filter: none !important;
+    animation: none !important;
+    opacity: 0.85;
   }
 }
 

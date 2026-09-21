@@ -33,12 +33,12 @@
     });
   }
 
-  // Parámetros de rendimiento equilibrados según dispositivo
+  // Parámetros de rendimiento equilibrados según dispositivo (15 FPS en móvil)
   const CONFIG = {
-    petalCount: isMobile ? 8 : 38,
-    sparkleCount: isMobile ? 6 : 26,
+    petalCount: isMobile ? 6 : 38,
+    sparkleCount: isMobile ? 4 : 26,
     burstCount: isMobile ? 3 : 12,
-    maxPetals: isMobile ? 22 : 75,
+    maxPetals: isMobile ? 18 : 75,
     colors: ["#ffd60a", "#ffb703", "#fb8500", "#fff3b0", "#ffe494"]
   };
 
@@ -65,12 +65,12 @@
       this.flipSpeed = 0.03 + Math.random() * 0.03;
     }
 
-    update(w, h) {
-      this.sway += this.swaySpeed;
-      this.flip += this.flipSpeed;
-      this.x += Math.sin(this.sway) * this.swayWidth + this.speedX;
-      this.y += this.speedY;
-      this.angle += this.angleSpeed;
+    update(w, h, dt = 1) {
+      this.sway += this.swaySpeed * dt;
+      this.flip += this.flipSpeed * dt;
+      this.x += (Math.sin(this.sway) * this.swayWidth + this.speedX) * dt;
+      this.y += this.speedY * dt;
+      this.angle += this.angleSpeed * dt;
 
       if (this.y > h + 40 || this.x < -40 || this.x > w + 40) {
         this.reset(w, h, false);
@@ -119,15 +119,15 @@
       this.growing = Math.random() > 0.5;
     }
 
-    update(w, h) {
-      this.x += this.speedX;
-      this.y += this.speedY;
+    update(w, h, dt = 1) {
+      this.x += this.speedX * dt;
+      this.y += this.speedY * dt;
 
       if (this.growing) {
-        this.alpha += this.alphaSpeed;
+        this.alpha += this.alphaSpeed * dt;
         if (this.alpha >= 0.9) this.growing = false;
       } else {
-        this.alpha -= this.alphaSpeed;
+        this.alpha -= this.alphaSpeed * dt;
         if (this.alpha <= 0.1) this.growing = true;
       }
 
@@ -258,30 +258,38 @@
     }
   }
 
-  // Bucle de animación del Canvas con pacing de frames en móvil
+  // Límite estricto de 15 FPS en móvil (~66.6ms por cuadro) para máxima ligereza
+  const MOBILE_FRAME_INTERVAL = 1000 / 15; // 66.67ms
+
+  // Bucle de animación del Canvas con pacing estricto a 15 FPS en móvil
   function renderLoop(timestamp) {
     if (!isRunning || !canvas || !ctx) return;
 
-    // En móviles moderar la tasa a ~40 FPS para evitar calentamiento y stuttering
-    if (isMobile && timestamp) {
-      if (timestamp - lastFrameTime < 24) {
+    let dt = 1;
+    if (isMobile) {
+      if (!lastFrameTime) lastFrameTime = timestamp || performance.now();
+      const elapsed = timestamp ? (timestamp - lastFrameTime) : MOBILE_FRAME_INTERVAL;
+
+      // En móviles saltar ejecución si aún no han pasado los 66.6ms (15 FPS)
+      if (elapsed < MOBILE_FRAME_INTERVAL) {
         animationFrameId = requestAnimationFrame(renderLoop);
         return;
       }
-      lastFrameTime = timestamp;
+      dt = Math.min(elapsed / 16.67, 5);
+      lastFrameTime = timestamp || performance.now();
     }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Actualizar y dibujar chispas
     sparkles.forEach((s) => {
-      s.update(canvas.width, canvas.height);
+      s.update(canvas.width, canvas.height, dt);
       s.draw(ctx);
     });
 
     // Actualizar y dibujar pétalos
     petals.forEach((p) => {
-      p.update(canvas.width, canvas.height);
+      p.update(canvas.width, canvas.height, dt);
       p.draw(ctx);
     });
 
