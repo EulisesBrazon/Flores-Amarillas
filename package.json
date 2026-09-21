@@ -1,0 +1,9 @@
+{
+  "name": "flores-amarillas",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Día de las Flores Amarillas con dedicatoria y previsualización dinámica en Vercel",
+  "dependencies": {
+    "@vercel/og": "^0.6.2"
+  }
+}

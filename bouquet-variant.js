@@ -1,7 +1,9 @@
 /**
- * Bouquet Variant - Nueva Arquitectura & Motor de Partículas 3D
- * Genera el ramo de flores amarillas tridimensional, lluvia de pétalos en Canvas,
- * y efectos interactivos al hacer clic o tocar la pantalla.
+ * Bouquet Variant - Motor de Partículas y Flores con Optimización Adaptativa
+ * Detecta si el usuario navega desde Móvil o Desktop:
+ * - Desktop: Máxima fidelidad visual (40+ partículas, sombras volumétricas, floración completa).
+ * - Móvil: Ultra-optimizado a 60 FPS (3 flores nítidas sin sobreposición, partículas ligeras,
+ *   toques suaves con solo 3 pétalos para no sobrecargar el GPU).
  */
 (function () {
   let canvas, ctx;
@@ -9,15 +11,38 @@
   let petals = [];
   let sparkles = [];
   let isRunning = false;
+  let lastBurstTime = 0;
+  let lastFrameTime = 0;
 
-  const isMobile = window.innerWidth < 600;
+  // Detección precisa de dispositivos móviles / táctiles
+  function detectMobile() {
+    return (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+      (window.innerWidth <= 768 && ('ontouchstart' in window || navigator.maxTouchPoints > 0))
+    );
+  }
+
+  const isMobile = detectMobile();
+
+  // Etiquetar body para que el CSS también adapte el renderizado
+  if (document.body) {
+    document.body.classList.add(isMobile ? 'is-mobile-device' : 'is-desktop-device');
+  } else {
+    document.addEventListener('DOMContentLoaded', () => {
+      document.body.classList.add(isMobile ? 'is-mobile-device' : 'is-desktop-device');
+    });
+  }
+
+  // Parámetros de rendimiento equilibrados según dispositivo
   const CONFIG = {
-    petalCount: isMobile ? 26 : 42,
-    sparkleCount: isMobile ? 18 : 32,
+    petalCount: isMobile ? 8 : 38,
+    sparkleCount: isMobile ? 6 : 26,
+    burstCount: isMobile ? 3 : 12,
+    maxPetals: isMobile ? 22 : 75,
     colors: ["#ffd60a", "#ffb703", "#fb8500", "#fff3b0", "#ffe494"]
   };
 
-  // Clase para cada pétalo cayendo en 3D
+  // Clase para cada pétalo cayendo
   class FallingPetal {
     constructor(w, h, startRandomY = true) {
       this.reset(w, h, startRandomY);
@@ -26,18 +51,18 @@
     reset(w, h, startRandomY = false) {
       this.x = Math.random() * w;
       this.y = startRandomY ? Math.random() * h : -30 - Math.random() * 50;
-      this.size = 12 + Math.random() * 16;
-      this.speedY = 1.2 + Math.random() * 1.8;
-      this.speedX = -0.5 + Math.random() * 1.0;
+      this.size = isMobile ? (10 + Math.random() * 12) : (12 + Math.random() * 16);
+      this.speedY = 1.2 + Math.random() * 1.6;
+      this.speedX = -0.4 + Math.random() * 0.8;
       this.angle = Math.random() * 360;
-      this.angleSpeed = -1.5 + Math.random() * 3;
+      this.angleSpeed = -1.2 + Math.random() * 2.4;
       this.sway = Math.random() * Math.PI * 2;
       this.swaySpeed = 0.02 + Math.random() * 0.03;
-      this.swayWidth = 1.2 + Math.random() * 2.2;
+      this.swayWidth = 1.0 + Math.random() * 1.8;
       this.color = CONFIG.colors[Math.floor(Math.random() * CONFIG.colors.length)];
-      this.opacity = 0.6 + Math.random() * 0.4;
+      this.opacity = 0.65 + Math.random() * 0.35;
       this.flip = Math.random() * Math.PI;
-      this.flipSpeed = 0.03 + Math.random() * 0.04;
+      this.flipSpeed = 0.03 + Math.random() * 0.03;
     }
 
     update(w, h) {
@@ -59,7 +84,6 @@
       ctx.scale(Math.cos(this.flip), 1);
       ctx.globalAlpha = this.opacity;
 
-      // Dibujar forma de pétalo orgánico curvado
       ctx.beginPath();
       ctx.fillStyle = this.color;
       ctx.moveTo(0, 0);
@@ -67,16 +91,18 @@
       ctx.bezierCurveTo(this.size * 0.4, -this.size, this.size * 0.5, -this.size * 0.4, 0, 0);
       ctx.fill();
 
-      // Brillo del pétalo
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.45)";
-      ctx.lineWidth = 1;
-      ctx.stroke();
+      // En desktop trazamos el contorno iluminado; en móvil se omite para duplicar los FPS
+      if (!isMobile) {
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.45)";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
 
       ctx.restore();
     }
   }
 
-  // Clase para chispas de luz dorada / luciérnagas
+  // Clase para chispas de luz dorada
   class GoldenSparkle {
     constructor(w, h) {
       this.reset(w, h);
@@ -85,9 +111,9 @@
     reset(w, h) {
       this.x = Math.random() * w;
       this.y = Math.random() * h;
-      this.radius = 1.2 + Math.random() * 2.5;
-      this.speedY = -0.4 - Math.random() * 0.8;
-      this.speedX = -0.3 + Math.random() * 0.6;
+      this.radius = 1.2 + Math.random() * 2.2;
+      this.speedY = -0.3 - Math.random() * 0.6;
+      this.speedX = -0.2 + Math.random() * 0.4;
       this.alpha = Math.random();
       this.alphaSpeed = 0.015 + Math.random() * 0.02;
       this.growing = Math.random() > 0.5;
@@ -99,7 +125,7 @@
 
       if (this.growing) {
         this.alpha += this.alphaSpeed;
-        if (this.alpha >= 1) this.growing = false;
+        if (this.alpha >= 0.9) this.growing = false;
       } else {
         this.alpha -= this.alphaSpeed;
         if (this.alpha <= 0.1) this.growing = true;
@@ -115,8 +141,13 @@
       ctx.save();
       ctx.globalAlpha = this.alpha;
       ctx.fillStyle = "#fff8db";
-      ctx.shadowColor = "#ffd60a";
-      ctx.shadowBlur = 8;
+
+      // shadowBlur solo en desktop para no castigar el renderizador móvil
+      if (!isMobile) {
+        ctx.shadowColor = "#ffd60a";
+        ctx.shadowBlur = 8;
+      }
+
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
       ctx.fill();
@@ -125,17 +156,27 @@
   }
 
   // Generar los pétalos concéntricos de las flores del ramo en el DOM
+  // Optimizado en móvil: 3 flores limpias (sin la 4ta redundante) y menos nodos
   function populateFlowerPetals() {
     const flowerContainers = document.querySelectorAll(".b-flower");
     flowerContainers.forEach((flower) => {
+      // En móvil, la 4ta flor del fondo (b-flower--top) se omite para evitar solapamientos y ahorrar DOM
+      if (isMobile && flower.classList.contains("b-flower--top")) {
+        flower.style.display = "none";
+        return;
+      }
+
       const outerLayer = flower.querySelector(".b-petals-layer--outer");
       const innerLayer = flower.querySelector(".b-petals-layer--inner");
       const isMain = flower.classList.contains("b-flower--main");
       const outerOffsetY = isMain ? -18 : -14;
       const innerOffsetY = isMain ? -12 : -9;
 
+      // Densidad de pétalos adaptada
+      const outerCount = isMobile ? (isMain ? 14 : 11) : (isMain ? 18 : 15);
+      const innerCount = isMobile ? (isMain ? 10 : 8) : (isMain ? 14 : 11);
+
       if (outerLayer && outerLayer.children.length === 0) {
-        const outerCount = isMain ? 18 : 15;
         for (let i = 0; i < outerCount; i++) {
           const petal = document.createElement("div");
           petal.className = "b-petal";
@@ -147,14 +188,13 @@
       }
 
       if (innerLayer && innerLayer.children.length === 0) {
-        const innerCount = isMain ? 14 : 11;
         const offsetAngle = 360 / innerCount / 2;
         for (let i = 0; i < innerCount; i++) {
           const petal = document.createElement("div");
           petal.className = "b-petal";
           const deg = (360 / innerCount) * i + offsetAngle;
           petal.style.transform = `rotate(${deg}deg) translateY(${innerOffsetY}px)`;
-          petal.style.animationDelay = `${(0.2 + i * 0.04).toFixed(2)}s`;
+          petal.style.animationDelay = `${(0.15 + i * 0.04).toFixed(2)}s`;
           innerLayer.appendChild(petal);
         }
       }
@@ -185,8 +225,13 @@
       sparkles.push(new GoldenSparkle(canvas.width, canvas.height));
     }
 
-    // Efecto interactivo al hacer click: explosión de pétalos y estrellas
+    // Efecto interactivo al hacer click/tap
     canvas.addEventListener("pointerdown", (e) => {
+      const now = performance.now();
+      // En móvil evitar acumulación por pulsaciones muy rápidas
+      if (isMobile && now - lastBurstTime < 280) return;
+      lastBurstTime = now;
+
       const rect = canvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
@@ -194,26 +239,38 @@
     });
   }
 
-  // Explosión interactiva de partículas
+  // Explosión interactiva de partículas (Solo 3 pétalos en móvil para fluidez)
   function burstAt(x, y) {
-    for (let i = 0; i < 12; i++) {
+    const count = CONFIG.burstCount;
+    for (let i = 0; i < count; i++) {
       const p = new FallingPetal(canvas.width, canvas.height, false);
-      p.x = x + (-20 + Math.random() * 40);
-      p.y = y + (-20 + Math.random() * 40);
-      p.speedX = (-4 + Math.random() * 8);
-      p.speedY = (-5 + Math.random() * 4);
-      p.size = 14 + Math.random() * 12;
+      p.x = x + (-15 + Math.random() * 30);
+      p.y = y + (-15 + Math.random() * 30);
+      p.speedX = (-3 + Math.random() * 6);
+      p.speedY = (-4 + Math.random() * 3);
+      p.size = isMobile ? (10 + Math.random() * 8) : (14 + Math.random() * 12);
       petals.push(p);
     }
-    // Limitar para mantener 60fps
-    if (petals.length > 75) {
-      petals.splice(0, petals.length - 75);
+
+    // Limitar para mantener tasa de frames limpia
+    if (petals.length > CONFIG.maxPetals) {
+      petals.splice(0, petals.length - CONFIG.maxPetals);
     }
   }
 
-  // Bucle de animación del Canvas
-  function renderLoop() {
+  // Bucle de animación del Canvas con pacing de frames en móvil
+  function renderLoop(timestamp) {
     if (!isRunning || !canvas || !ctx) return;
+
+    // En móviles moderar la tasa a ~40 FPS para evitar calentamiento y stuttering
+    if (isMobile && timestamp) {
+      if (timestamp - lastFrameTime < 24) {
+        animationFrameId = requestAnimationFrame(renderLoop);
+        return;
+      }
+      lastFrameTime = timestamp;
+    }
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Actualizar y dibujar chispas
@@ -259,14 +316,16 @@
     populateFlowerPetals();
     replayEntrance();
     if (!canvas) initCanvas();
-    renderLoop();
+    animationFrameId = requestAnimationFrame(renderLoop);
 
-    // Destello sutil de chispas cuando la flor central termina de desplegarse
-    setTimeout(() => {
-      if (isRunning && canvas) {
-        burstAt(canvas.width / 2, canvas.height * 0.52);
-      }
-    }, 1250);
+    // En móvil omitir destello automático inicial para arranque instantáneo
+    if (!isMobile) {
+      setTimeout(() => {
+        if (isRunning && canvas) {
+          burstAt(canvas.width / 2, canvas.height * 0.52);
+        }
+      }, 1250);
+    }
   }
 
   function stop() {
@@ -281,6 +340,7 @@
   window.BouquetVariant = {
     start: start,
     stop: stop,
-    burstAt: burstAt
+    burstAt: burstAt,
+    isMobile: isMobile
   };
 })();

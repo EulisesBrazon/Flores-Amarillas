@@ -6,8 +6,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" href="img/flowers.png" type="image/x-icon">
-    <title>Flowers</title>
+    <title>Día de las Flores Amarillas 🌻</title>
+    <meta name="description" content="Alguien especial te ha enviado un detalle. Toca para abrir tu sorpresa 💛">
+    <!-- Fallback Open Graph / WhatsApp / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="🌻 ¡Un detalle especial de Flores Amarillas para ti! ✨">
+    <meta property="og:description" content="Toca aquí para abrir tu sorpresa y descubrir tu dedicatoria 💛">
+    <meta property="og:image" content="https://flores.eulisesbrazon.com/api/og">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/png">
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="🌻 ¡Un detalle especial de Flores Amarillas para ti! ✨">
+    <meta name="twitter:description" content="Toca aquí para abrir tu sorpresa y descubrir tu dedicatoria 💛">
+    <meta name="twitter:image" content="https://flores.eulisesbrazon.com/api/og">
 </head>
 
 <body>
@@ -21,13 +34,11 @@
 
     <div class="description">
         <span>ESTE DETALLE ES PARA TI :)</span>
-        <span id="nombre-usuario" style="display:block;color:#fff;font-size:2em;margin-top:0.5em;"></span>
+        <span id="nombre-usuario"></span>
     </div>
 
     <div class="button">
-        <button class="botones">
-            <a id="link-flower" href="flower.html" style="color: #fff;">CLICK AQUÍ</a>
-        </button>
+        <a id="link-flower" class="boton-enlace" href="flower.html">CLICK AQUÍ</a>
     </div>
 
     <!-- Script para manejar query params -->

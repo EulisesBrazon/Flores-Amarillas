@@ -3,9 +3,12 @@
    Adaptación total para móviles, tablets, desktop y landscape
    ========================================================= */
 
-/* Ocultar el escenario antiguo cuando la variante bouquet está activa */
-body.variant-bouquet .flowers {
+/* Ocultar y cancelar animaciones del escenario antiguo cuando la variante bouquet está activa */
+body.variant-bouquet .flowers,
+body.variant-bouquet .flowers * {
   display: none !important;
+  animation: none !important;
+  transition: none !important;
 }
 
 body.variant-bouquet .night {
@@ -30,8 +33,8 @@ body.variant-bouquet .night {
   -webkit-overflow-scrolling: touch;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
-  padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom)) 16px;
+  justify-content: flex-start;
+  padding: max(10px, env(safe-area-inset-top)) 16px max(14px, env(safe-area-inset-bottom)) 16px;
   box-sizing: border-box;
   z-index: 20;
   pointer-events: none;
@@ -78,7 +81,7 @@ body.variant-bouquet .bouquet-scene {
     cardFloat 4s 1.2s ease-in-out infinite alternate;
   width: auto;
   max-width: min(90vw, 440px);
-  margin: 0;
+  margin: clamp(28px, 5vh, 44px) 0 0 0;
   flex-shrink: 0;
 }
 
@@ -149,7 +152,7 @@ body.variant-bouquet .bouquet-scene {
   z-index: 25;
   pointer-events: auto;
   cursor: pointer;
-  margin: 0;
+  margin: auto 0;
   flex-shrink: 0;
   transform: scale(clamp(0.85, min(38vh, 42vw) / 260, 1.1));
   transform-origin: center center;
@@ -619,18 +622,18 @@ body.variant-bouquet .bouquet-scene {
 /* En móviles: botón circular perfecto que nunca se corta ni empuja el borde */
 @media (max-width: 600px) {
   .music-toggle-btn {
-    width: 38px;
-    height: 38px;
+    width: 34px;
+    height: 34px;
     padding: 0;
     border-radius: 50%;
     right: max(12px, env(safe-area-inset-right));
-    top: max(12px, env(safe-area-inset-top));
+    top: max(10px, env(safe-area-inset-top));
   }
   .music-toggle-btn .music-label {
     display: none !important;
   }
   .music-toggle-btn .music-icon {
-    font-size: 17px;
+    font-size: 15px;
     line-height: 1;
     margin: 0;
   }
@@ -758,3 +761,49 @@ body.variant-bouquet .bouquet-scene {
     transform: scale(1.35);
   }
 }
+
+/* =========================================================
+   OPTIMIZACIONES EXCLUSIVAS PARA MÓVIL (60 FPS & SIN LAG)
+   - Oculta la 4ta flor duplicada del fondo (.b-flower--top)
+   - Quita filtros costosos individuales (drop-shadow) de cada flor
+   - Unifica la sombra en el contenedor padre
+   ========================================================= */
+body.is-mobile-device .b-flower--top {
+  display: none !important;
+  animation: none !important;
+}
+
+body.is-mobile-device .b-flower {
+  filter: none !important;
+}
+
+body.is-mobile-device .bouquet-display {
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.6));
+}
+
+body.is-mobile-device .bouquet-card {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+@media (max-width: 768px) {
+  .b-flower--top {
+    display: none !important;
+    animation: none !important;
+  }
+
+  .b-flower {
+    filter: none !important;
+  }
+  
+  .bouquet-display {
+    filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.6));
+  }
+
+  /* Reducir desenfoque backdrop-filter en la tarjeta para fluidez extrema */
+  .bouquet-card {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+}
+

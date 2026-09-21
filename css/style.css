@@ -22,6 +22,7 @@ body{
     border: none;
 }
 
+.boton-enlace,
 .botones a {
     display: inline-block;
     padding: 12px 30px;
@@ -38,13 +39,15 @@ body{
     cursor: pointer;
 }
 
+.boton-enlace:hover,
 .botones a:hover {
     background: rgba(255, 255, 255, 0.25);
     box-shadow: 0 8px 25px rgba(0,0,0,0.3);
     transform: translateY(-2px);
 }
 
-.botones a:focus{
+.boton-enlace:focus,
+.botones a:focus {
     background-color: rgb(50, 194, 194);
 }
 
@@ -97,6 +100,13 @@ body{
     text-decoration: none;
     font-size: 1rem;
     color: #111;
+}
+
+#nombre-usuario {
+    display: block;
+    color: #fff;
+    font-size: 2em;
+    margin-top: 0.5em;
 }
 
 @media screen and (max-width:574px){
